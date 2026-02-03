@@ -15,7 +15,7 @@ namespace ChessLogic
         public override Piece Copy()
         {
             King copy = new King(this.Color);
-            copy.hasMoved = hasMoved;
+            copy.HasMoved = HasMoved;
             return copy;
         }
     }
