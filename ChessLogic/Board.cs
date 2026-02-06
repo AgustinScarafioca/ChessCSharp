@@ -29,33 +29,38 @@ namespace ChessLogic
 
         private void AddStartPieces()
         {
-            // Add pawns
+            // Pawns
             for (int col = 0; col < 8; col++)
             {
-                this[1, col] = new Pawn(Player.White);
-                this[6, col] = new Pawn(Player.Black);
+                this[6, col] = new Pawn(Player.White);
+                this[1, col] = new Pawn(Player.Black);
             }
-            // Add rooks
-            this[0, 0] = new Rook(Player.White);
-            this[0, 7] = new Rook(Player.White);
-            this[7, 0] = new Rook(Player.Black);
-            this[7, 7] = new Rook(Player.Black);
-            // Add knights
-            this[0, 1] = new Knight(Player.White);
-            this[0, 6] = new Knight(Player.White);
-            this[7, 1] = new Knight(Player.Black);
-            this[7, 6] = new Knight(Player.Black);
-            // Add bishops
-            this[0, 2] = new Bishop(Player.White);
-            this[0, 5] = new Bishop(Player.White);
-            this[7, 2] = new Bishop(Player.Black);
-            this[7, 5] = new Bishop(Player.Black);
-            // Add queens
-            this[0, 3] = new Queen(Player.White);
-            this[7, 3] = new Queen(Player.Black);
-            // Add kings
-            this[0, 4] = new King(Player.White);
-            this[7, 4] = new King(Player.Black);
+
+            // Rooks
+            this[7, 0] = new Rook(Player.White);
+            this[7, 7] = new Rook(Player.White);
+            this[0, 0] = new Rook(Player.Black);
+            this[0, 7] = new Rook(Player.Black);
+
+            // Knights
+            this[7, 1] = new Knight(Player.White);
+            this[7, 6] = new Knight(Player.White);
+            this[0, 1] = new Knight(Player.Black);
+            this[0, 6] = new Knight(Player.Black);
+
+            // Bishops
+            this[7, 2] = new Bishop(Player.White);
+            this[7, 5] = new Bishop(Player.White);
+            this[0, 2] = new Bishop(Player.Black);
+            this[0, 5] = new Bishop(Player.Black);
+
+            // Queens
+            this[7, 3] = new Queen(Player.White);
+            this[0, 3] = new Queen(Player.Black);
+
+            // Kings
+            this[7, 4] = new King(Player.White);
+            this[0, 4] = new King(Player.Black);
         }
 
         public static bool IsInside(Position pos)
