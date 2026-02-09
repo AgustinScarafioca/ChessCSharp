@@ -95,7 +95,7 @@ namespace ChessLogic
 
         public bool IsInCheck(Player player)
         {
-            return PiecePositionsFor(player).Any(pos =>
+            return PiecePositionsFor(player.Opponent()).Any(pos =>
             {
                 Piece piece = this[pos];
                 return piece.CanCaptureOpponentKing(pos, this);
