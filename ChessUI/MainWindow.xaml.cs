@@ -22,7 +22,7 @@ namespace ChessUI
         private readonly Dictionary<Position, Move> moveCache = new Dictionary<Position, Move>();
 
         private GameState gameState;
-        private Position selectedPos= null;
+        private Position selectedPos = null;
 
         public MainWindow()
         {
@@ -41,34 +41,39 @@ namespace ChessUI
                 for (int c = 0; c < 8; c++)
                 {
                     Image image = new Image();
-                    pieceImages[r,c] = image;
+                    pieceImages[r, c] = image;
                     PieceGrid.Children.Add(image);
 
                     Rectangle highlight = new Rectangle();
-                    highlights[r,c] = highlight;
+                    highlights[r, c] = highlight;
                     HighlightGrid.Children.Add(highlight);
                 }
             }
         }
 
-        private void DrawBoard (Board board)
+        private void DrawBoard(Board board)
         {
             for (int r = 0; r < 8; r++)
             {
                 for (int c = 0; c < 8; c++)
                 {
                     Piece piece = board[r, c];
-                    pieceImages[r,c].Source = Images.GetImage(piece);
+                    pieceImages[r, c].Source = Images.GetImage(piece);
                 }
             }
         }
 
         private void BoardGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (IsMenuOnScreen())
+            {
+                return;
+            }
+
             Point point = e.GetPosition(BoardGrid);
             Position pos = ToSquarePosition(point);
 
-            if(selectedPos == null)
+            if (selectedPos == null)
             {
                 OnFromPositionSelected(pos);
             }
@@ -78,7 +83,7 @@ namespace ChessUI
             }
         }
 
-        private Position ToSquarePosition(Point point)  
+        private Position ToSquarePosition(Point point)
         {
             double squareSize = BoardGrid.ActualWidth / 8;
             int row = (int)(point.Y / squareSize);
@@ -114,7 +119,12 @@ namespace ChessUI
             gameState.MakeMove(move);
             DrawBoard(gameState.Board);
             SetCursor(gameState.CurrentPlayer);
-        } 
+
+            if(gameState.IsGameOver())
+            {
+                ShowGameOverMenu();
+            }
+        }
 
         private void CacheMoves(IEnumerable<Move> moves)
         {
@@ -135,9 +145,9 @@ namespace ChessUI
             }
         }
 
-        private void HideHighlights() 
+        private void HideHighlights()
         {
-            foreach(Position to in moveCache.Keys)
+            foreach (Position to in moveCache.Keys)
             {
                 highlights[to.Row, to.Column].Fill = Brushes.Transparent;
             }
@@ -153,6 +163,39 @@ namespace ChessUI
             {
                 Cursor = ChessCursors.BlackCursor;
             }
+        }
+
+        private bool IsMenuOnScreen()
+        {
+            return MenuContainer.Content != null;
+        }
+
+        private void ShowGameOverMenu()
+        {
+            GameOverMenu gameOverMenu = new GameOverMenu(gameState);
+            MenuContainer.Content = gameOverMenu;
+
+            gameOverMenu.OptionSelected += option =>
+            {
+                if (option == Option.Restart)
+                {
+                    MenuContainer.Content = null;
+                    RestartGame();
+                }
+                else
+                {
+                    Application.Current.Shutdown();
+                }
+            };
+        }
+
+        private void RestartGame()
+        {
+            HideHighlights();
+            moveCache.Clear();
+            gameState = new GameState(Player.White, Board.Initial());
+            DrawBoard(gameState.Board);
+            SetCursor(gameState.CurrentPlayer);
         }
     }
 }
