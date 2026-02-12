@@ -12,7 +12,7 @@
         <Style TargetType="Border" x:Key="BorderStyle">
             <Setter Property="BorderThickness" Value="4"></Setter>
             <Setter Property="BorderBrush" Value="{StaticResource StrokeColor}"></Setter>
-            <Setter Property="BorderBrush" Value="{StaticResource FillColor}"></Setter>
+            <Setter Property="Background" Value="{StaticResource FillColor}"></Setter>
             <Setter Property="CornerRadius" Value="10"></Setter>
         </Style>
 
