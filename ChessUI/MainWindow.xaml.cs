@@ -110,7 +110,7 @@ namespace ChessUI
 
             if (moveCache.TryGetValue(pos, out Move move))
             {
-                if(move.Type == MoveType.PawnPromotion)
+                if (move.Type == MoveType.PawnPromotion)
                 {
                     HandlePromotion(move.FromPos, move.ToPos);
                 }
@@ -143,7 +143,7 @@ namespace ChessUI
             DrawBoard(gameState.Board);
             SetCursor(gameState.CurrentPlayer);
 
-            if(gameState.IsGameOver())
+            if (gameState.IsGameOver())
             {
                 ShowGameOverMenu();
             }
@@ -214,11 +214,35 @@ namespace ChessUI
 
         private void RestartGame()
         {
+            selectedPos = null;
             HideHighlights();
             moveCache.Clear();
             gameState = new GameState(Player.White, Board.Initial());
             DrawBoard(gameState.Board);
             SetCursor(gameState.CurrentPlayer);
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (!IsMenuOnScreen() && e.Key == Key.Escape)
+            {
+                ShowPauseMenu();
+            }
+        }
+
+        private void ShowPauseMenu()
+        {
+            PauseMenu pauseMenu = new PauseMenu();
+            MenuContainer.Content = pauseMenu;
+            pauseMenu.OptionSelected += option =>
+            {
+                MenuContainer.Content = null;
+
+                if (option == Option.Restart)
+                {
+                    RestartGame();
+                }
+            };
         }
     }
 }
