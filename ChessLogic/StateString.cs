@@ -101,7 +101,7 @@ namespace ChessLogic
             bool castleBKS = board.CastleRightKS(Player.Black);
             bool castleBQS = board.CastleRightQS(Player.Black);
 
-            if (!castleWKS || !castleWQS || castleBKS || castleBQS)
+            if (!castleWKS && !castleWQS && !castleBKS && !castleBQS)
             {
                 sb.Append('-');
                 return;

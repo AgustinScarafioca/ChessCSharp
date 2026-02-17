@@ -127,6 +127,14 @@ namespace ChessLogic
             {
                 copy[pos] = this[pos].Copy();
             }
+
+            // Copiar estado de en-passant (pawn skip positions)
+            foreach (Player p in new[] { Player.White, Player.Black })
+            {
+                Position skip = pawnSkipPositions[p];
+                copy.SetPawnSkipPosition(p, skip == null ? null : new Position(skip.Row, skip.Column));
+            }
+
             return copy;
         }
 
